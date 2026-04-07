@@ -1,15 +1,18 @@
-from trainer import train_model
-from pydantic import BaseModel
-from predictor import predict
-from fastapi import FastAPI
 import uvicorn
-import sys
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).parent.parent / "ml"))
-
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from ml.predictor import predict
+from ml.trainer import train_model
+from pydantic import BaseModel
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class PredictRequest(BaseModel):
